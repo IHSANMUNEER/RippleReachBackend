@@ -9,7 +9,7 @@ router.post("/addblog", createBlogPost);
 router.post("/login", adminLogin);
 router.get("/getblog", allBlogs);
 router.get("/cryptoblog", cryptoBlogs);
-router.get("/onepost/:id", getBlogById);
+router.get("/blog/:id", getBlogById);
 router.get("/cricketblog", cricketBlogs);
 router.get("/travelblog", travelBlogs);
 router.get("/technologyblog", technologyBlogs);

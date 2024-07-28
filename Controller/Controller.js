@@ -129,23 +129,27 @@ const createBlogPost = async (req, res) => {
 
 const getBlogById = async (req, res) => {
   const blogId = req.params.id;
-    console.log(blogId)
-    // Validate the blogId is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(blogId)) {
-        return res.status(400).json({ success: false, message: 'Invalid blog ID' });
-    }
+  console.log(blogId);
 
-    try {
-        const blog = await Blog.findById(blogId);
-        if (!blog) {
-            return res.status(404).json({ success: false, message: 'Blog not found' });
-        }
-        res.json({ success: true, blog: blog });
-    } catch (error) {
-        console.error('Error fetching blog:', error);
-        res.status(500).json({ success: false, message: 'Failed to fetch blog', error: error.message });
-    }
+
+  if (!mongoose.Types.ObjectId.isValid(blogId)) {
+      return res.status(400).json({ success: false, message: 'Invalid blog ID' });
+  }
+
+  try {
+      const blog = await Blog.findById(blogId).lean().select('-__v'); 
+
+      if (!blog) {
+          return res.status(404).json({ success: false, message: 'Blog not found' });
+      }
+
+      res.json({ success: true, blog: blog });
+  } catch (error) {
+      console.error('Error fetching blog:', error);
+      res.status(500).json({ success: false, message: 'Failed to fetch blog', error: error.message });
+  }
 };
+
 
 const adminLogin = async (req, res) => {
   const { email, password } = req.body;
